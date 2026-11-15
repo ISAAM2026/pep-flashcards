@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人教版 PEP 三年级上册 · 单词卡片</title>
+<style>
+  :root{
+    --green:#14513a;        /* 主色 墨绿 */
+    --green-2:#1f7a5a;
+    --green-soft:#e7f1ec;
+    --green-line:#bfe0d2;
+    --ink:#1f2a24;
+    --paper:#f4faf6;
+    --card:#ffffff;
+    --muted:#5d7068;
+    --shadow:0 10px 30px rgba(20,81,58,.15);
+    --seg1:#1f7a5a; --seg2:#c9762b; --seg3:#7a4fb0; --seg4:#2b6fb0; --seg5:#b03a6e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:"PingFang SC","Microsoft YaHei",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:linear-gradient(160deg,#eef7f2 0%,#dcefe6 100%);
+    color:var(--ink); min-height:100vh; padding-bottom:40px;
+  }
+  header.top{
+    background:var(--green); color:#fff; padding:18px 20px 14px;
+    box-shadow:0 4px 14px rgba(20,81,58,.25);
+  }
+  header.top h1{margin:0; font-size:20px; letter-spacing:1px; font-weight:700;}
+  header.top p{margin:4px 0 0; font-size:12.5px; opacity:.85;}
+  .wrap{max-width:880px; margin:0 auto; padding:16px;}
+  /* unit tabs */
+  .tabs{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 14px;}
+  .tab{
+    border:1.5px solid var(--green-line); background:#fff; color:var(--green);
+    padding:8px 14px; border-radius:999px; cursor:pointer; font-size:14px; font-weight:600;
+    transition:.15s; user-select:none;
+  }
+  .tab:hover{background:var(--green-soft);}
+  .tab.active{background:var(--green); color:#fff; border-color:var(--green);}
+  /* progress */
+  .prog-row{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+  .prog-bar{flex:1; height:14px; background:#d8e9e0; border-radius:999px; overflow:hidden; border:1px solid var(--green-line);}
+  .prog-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--green-2),var(--green)); transition:width .35s ease;}
+  .prog-label{font-size:13px; color:var(--green); font-weight:700; white-space:nowrap;}
+  .mini-btn{
+    border:1.5px solid var(--green); background:#fff; color:var(--green);
+    padding:7px 12px; border-radius:10px; cursor:pointer; font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:6px;
+  }
+  .mini-btn:hover{background:var(--green-soft);}
+  .mini-btn svg{width:15px; height:15px;}
+  /* card */
+  .stage{display:flex; justify-content:center; perspective:1400px; margin:8px 0 6px;}
+  .card{
+    width:min(420px,92vw); height:300px; position:relative; cursor:pointer;
+    transform-style:preserve-3d; transition:transform .6s cubic-bezier(.4,.2,.2,1);
+  }
+  .card.flipped{transform:rotateY(180deg);}
+  .face{
+    position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+    background:var(--card); border-radius:20px; box-shadow:var(--shadow);
+    border:2px solid var(--green-line); padding:22px; display:flex; flex-direction:column;
+  }
+  .face.back{transform:rotateY(180deg); overflow:auto;}
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start;}
+  .icon-btn{
+    background:none; border:none; cursor:pointer; padding:4px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center; transition:.15s; color:var(--green);
+  }
+  .icon-btn:hover{background:var(--green-soft);}
+  .icon-btn svg{width:26px; height:26px; display:block;}
+  .word-area{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:10px;}
+  .word{font-size:40px; font-weight:800; line-height:1.15; letter-spacing:.5px; display:flex; flex-wrap:wrap; justify-content:center; gap:0 2px;}
+  .word .seg{transition:.2s;}
+  .word.size-big{font-size:66px;}
+  .word.size-small{font-size:24px;}
+  .word.size-tall{font-size:40px; line-height:1.05; transform:scaleY(1.45); transform-origin:center;}
+  .word.size-fast{transform:skewX(-12deg);}
+  .phon{font-size:18px; color:var(--muted); font-style:italic;}
+  .hint{font-size:12px; color:#9bb0a6; margin-top:2px;}
+  .occ{font-size:12px; color:var(--seg2); font-weight:700; align-self:flex-end;}
+  /* back */
+  .zh{font-size:30px; font-weight:800; color:var(--green); text-align:center; margin-top:6px;}
+  .ex{font-size:16px; color:var(--ink); text-align:center; margin:8px 4px;}
+  .ex b{color:var(--green-2);}
+  .tips{margin-top:10px; border-top:1px dashed var(--green-line); padding-top:10px;}
+  .tip-title{font-size:12px; font-weight:800; color:var(--green-2); letter-spacing:1px; margin-bottom:6px;}
+  .tip-block{font-size:13.5px; line-height:1.7; margin-bottom:8px;}
+  .tip-block .lab{font-weight:700; color:var(--green);}
+  .chip{display:inline-block; background:var(--green-soft); color:var(--green); border-radius:8px; padding:2px 8px; margin:2px 3px; cursor:pointer; font-weight:700; border:1px solid var(--green-line);}
+  .chip:hover{background:var(--green); color:#fff;}
+  .hl{color:var(--seg2); font-weight:800; font-size:1.18em;}
+  .diff{color:#d83a3a; font-weight:800; text-decoration:underline;}
+  .shape-tip{font-size:13px; color:var(--muted); background:#fff8ec; border:1px solid #f0d9a8; border-radius:8px; padding:6px 8px;}
+  /* controls */
+  .controls{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:14px;}
+  .btn{
+    border:none; cursor:pointer; font-weight:700; font-size:15px; padding:12px 18px; border-radius:14px;
+    background:var(--green); color:#fff; box-shadow:0 4px 12px rgba(20,81,58,.25); transition:.15s; display:inline-flex; align-items:center; gap:7px;
+  }
+  .btn:hover{filter:brightness(1.08); transform:translateY(-1px);}
+  .btn svg{width:17px;height:17px;}
+  .btn.ghost{background:#fff; color:var(--green); border:1.5px solid var(--green); box-shadow:none;}
+  .btn.warn{background:var(--seg2);}
+  .btn.ok{background:var(--green-2);}
+  .back-controls{display:flex; gap:10px; justify-content:center; margin-top:10px; flex-wrap:wrap;}
+  /* modal */
+  .overlay{position:fixed; inset:0; background:rgba(15,40,30,.45); display:none; align-items:center; justify-content:center; padding:18px; z-index:50;}
+  .overlay.show{display:flex;}
+  .modal{background:#fff; border-radius:18px; max-width:560px; width:100%; max-height:86vh; overflow:auto; box-shadow:var(--shadow); padding:20px;}
+  .modal h2{margin:0 0 12px; color:var(--green); font-size:18px; display:flex; align-items:center; gap:8px;}
+  .modal h2 svg{width:20px;height:20px;}
+  .wb-item{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 10px; border:1px solid var(--green-line); border-radius:12px; margin-bottom:8px; background:var(--paper);}
+  .wb-item .w{font-weight:800; font-size:16px; color:var(--ink);}
+  .wb-item .p{font-size:12px; color:var(--muted);}
+  .wb-item .z{font-size:13px; color:var(--green-2); margin-left:8px;}
+  .dots{display:inline-flex; gap:4px; margin-left:8px;}
+  .dot{width:9px;height:9px;border-radius:50%; background:#d8e9e0; border:1px solid var(--green-line);}
+  .dot.on{background:var(--green-2); border-color:var(--green-2);}
+  .rm-btn{border:none; background:#fdecec; color:#c0392b; border-radius:9px; padding:6px 10px; cursor:pointer; font-weight:700; font-size:13px;}
+  .rm-btn:hover{background:#f9d6d6;}
+  .modal-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
+  .close-x{margin-left:auto; cursor:pointer; color:var(--muted); background:none; border:none; font-size:20px; line-height:1;}
+  /* dictation */
+  .dict-q{font-size:15px; color:var(--ink); margin:6px 0;}
+  .dict-zh{font-size:22px; font-weight:800; color:var(--green);}
+  .dict-input{width:100%; font-size:20px; padding:12px; border:2px solid var(--green-line); border-radius:12px; margin:10px 0; text-align:center; letter-spacing:2px;}
+  .dict-input:focus{outline:none; border-color:var(--green);}
+  .dict-fb{font-size:15px; font-weight:700; min-height:22px; margin-bottom:8px;}
+  .dict-fb.ok{color:var(--green-2);}
+  .dict-fb.no{color:#c0392b;}
+  .dict-score{font-size:13px; color:var(--muted);}
+  /* 听写反馈：红框 + 抖动 */
+  .dict-input.ok{ border-color:var(--green-2); background:#eafaf1; }
+  .dict-input.error{ border-color:#d83a3a !important; background:#fdecec; }
+  @keyframes dictShake{
+    10%,90%{transform:translateX(-2px);}
+    20%,80%{transform:translateX(4px);}
+    30%,50%,70%{transform:translateX(-8px);}
+    40%,60%{transform:translateX(8px);}
+  }
+  .dict-input.shake{ animation:dictShake .5s cubic-bezier(.36,.07,.19,.97) both; }
+  /* 翻译 */
+  .tr-toggle{display:flex; gap:8px; margin:6px 0 12px;}
+  .tr-mode{border:1.5px solid var(--green-line); background:#fff; color:var(--green); padding:8px 18px; border-radius:999px; cursor:pointer; font-weight:700; font-size:14px; transition:.15s;}
+  .tr-mode:hover{background:var(--green-soft);}
+  .tr-mode.active{background:var(--green); color:#fff; border-color:var(--green);}
+  .tr-result{margin-top:8px; min-height:30px;}
+  .tr-card{background:var(--green-soft); border:1px solid var(--green-line); border-radius:12px; padding:14px; margin-bottom:8px;}
+  .tr-w{font-size:22px; font-weight:800; color:var(--green);}
+  .tr-p{font-size:14px; color:var(--muted); font-style:italic;}
+  .tr-zh{font-size:18px; font-weight:700; margin:6px 0; color:var(--ink);}
+  .tr-ex{font-size:14px; color:var(--ink);}
+  .tr-note{color:var(--muted); font-size:14px; background:#fff8ec; border:1px solid #f0d9a8; border-radius:10px; padding:10px;}
+  .tr-speak{margin-top:8px;}
+  /* connect view */
+  .grp{margin-bottom:14px;}
+  .grp h3{margin:0 0 6px; font-size:14px; color:var(--green-2);}
+  .grp .nodes{display:flex; flex-wrap:wrap; gap:8px;}
+  .node{background:var(--green-soft); border:1px solid var(--green-line); color:var(--green); border-radius:10px; padding:7px 12px; cursor:pointer; font-weight:700; font-size:14px;}
+  .node:hover{background:var(--green); color:#fff;}
+  .body-svg{width:100%; max-width:300px; display:block; margin:0 auto;}
+  /* toast */
+  .toast{position:fixed; left:50%; bottom:30px; transform:translateX(-50%) translateY(20px); background:var(--green); color:#fff; padding:12px 20px; border-radius:12px; font-weight:700; box-shadow:var(--shadow); opacity:0; transition:.25s; z-index:80; pointer-events:none;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  .foot{text-align:center; color:#7c8f86; font-size:12px; margin-top:22px;}
+  .legend{font-size:11.5px; color:#8aa39a; text-align:center; margin-top:4px;}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>人教版 PEP 三年级上册 · 单词卡片</h1>
+  <p>点卡片翻转 · 用心形收藏生词 · 用喇叭听读 · 通关后听写</p>
+</header>
+
+<div class="wrap">
+  <div class="tabs" id="tabs"></div>
+
+  <div class="prog-row">
+    <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+    <div class="prog-label" id="progLabel">已记住 0 / 0</div>
+    <button class="mini-btn" id="connectBtn" style="display:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M5 8v4h14V8M12 12v4"/></svg>
+      串起来看
+    </button>
+  </div>
+
+  <div class="stage">
+    <div class="card" id="card">
+      <div class="face front">
+        <div class="card-top">
+          <button class="icon-btn" id="speakBtn" title="听读">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+          </button>
+          <button class="icon-btn" id="heartBtn" title="收藏">
+            <svg id="heartSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-9.5-9C1 8 2.5 4.5 6 4.5c2 0 3.2 1.2 4 2.5.8-1.3 2-2.5 4-2.5 3.5 0 5 3.5 3.5 6.5C19 15.5 12 20 12 20z"/></svg>
+          </button>
+        </div>
+        <div class="word-area">
+          <div class="word" id="wordEl"></div>
+          <div class="phon" id="phonEl"></div>
+          <div class="hint">点击卡片 / 翻转卡片 看中文</div>
+        </div>
+        <div class="occ" id="occEl"></div>
+      </div>
+
+      <div class="face back">
+        <div class="card-top">
+          <button class="icon-btn" id="speakBtn2" title="听读">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+          </button>
+          <button class="icon-btn" id="heartBtn2" title="收藏">
+            <svg id="heartSvg2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-9.5-9C1 8 2.5 4.5 6 4.5c2 0 3.2 1.2 4 2.5.8-1.3 2-2.5 4-2.5 3.5 0 5 3.5 3.5 6.5C19 15.5 12 20 12 20z"/></svg>
+          </button>
+        </div>
+        <div class="zh" id="zhEl"></div>
+        <div class="ex" id="exEl"></div>
+        <div class="tips" id="tipsEl"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn ghost" id="flipBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+      翻转卡片
+    </button>
+    <button class="btn ghost" id="nextBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+      随机下一个
+    </button>
+    <button class="btn ghost" id="wbBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M4 5l8 6 8-6"/></svg>
+      查看生词本
+    </button>
+    <button class="btn" id="dictBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/><path d="M8 13h7M8 16h5"/></svg>
+      开始听写
+    </button>
+    <button class="btn ghost" id="trBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7"/><path d="M7.5 3v3.5c0 1.4-1.1 2.5-2.5 2.5S2.5 8.4 2.5 7V3"/><path d="M12 20l4-9 4 9"/><path d="M13.2 17h5.6"/></svg>
+      翻译工具
+    </button>
+  </div>
+
+  <div class="back-controls" id="backControls" style="display:none;">
+    <button class="btn warn" id="forgetBtn">没记住</button>
+    <button class="btn ok" id="rememberBtn">记住了</button>
+  </div>
+
+  <div class="legend">提示：正面单词按自然拼读分段用不同颜色显示；颜色词（如 orange）以其本色呈现；big 特大、small 特小、tall 拉高。</div>
+  <div class="foot">数据来自课本词汇表（Appendix 2），进度与生词本保存在本机浏览器，刷新不丢失。</div>
+</div>
+
+<!-- 生词本 modal -->
+<div class="overlay" id="wbOverlay">
+  <div class="modal">
+    <h2>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.5-9.5-9C1 8 2.5 4.5 6 4.5c2 0 3.2 1.2 4 2.5.8-1.3 2-2.5 4-2.5 3.5 0 5 3.5 3.5 6.5C19 15.5 12 20 12 20z"/></svg>
+      我的生词本
+      <button class="close-x" data-close="wbOverlay">×</button>
+    </h2>
+    <div id="wbList"></div>
+    <div class="modal-actions">
+      <button class="btn" id="dictWbBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg>
+        听写生词本
+      </button>
+      <button class="btn ghost" data-close="wbOverlay">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 串起来看 modal -->
+<div class="overlay" id="connectOverlay">
+  <div class="modal">
+    <h2>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M5 8v4h14V8M12 12v4"/></svg>
+      串起来看
+      <button class="close-x" data-close="connectOverlay">×</button>
+    </h2>
+    <div id="connectBody"></div>
+    <div class="modal-actions"><button class="btn ghost" data-close="connectOverlay">关闭</button></div>
+  </div>
+</div>
+
+<!-- 听写 modal -->
+<div class="overlay" id="dictOverlay">
+  <div class="modal">
+    <h2>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg>
+      听写练习
+      <button class="close-x" data-close="dictOverlay">×</button>
+    </h2>
+    <div id="dictBody"></div>
+    <div class="modal-actions"><button class="btn ghost" data-close="dictOverlay">退出听写</button></div>
+  </div>
+</div>
+
+<!-- 翻译 modal -->
+<div class="overlay" id="trOverlay">
+  <div class="modal">
+    <h2>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7"/><path d="M7.5 3v3.5c0 1.4-1.1 2.5-2.5 2.5S2.5 8.4 2.5 7V3"/><path d="M12 20l4-9 4 9"/><path d="M13.2 17h5.6"/></svg>
+      翻译工具
+      <button class="close-x" data-close="trOverlay">×</button>
+    </h2>
+    <p style="color:var(--muted); font-size:13px; margin:0 0 4px;">基于课本词汇表离线翻译（共 136 词，无需联网）。</p>
+    <div class="tr-toggle" id="trToggle">
+      <button class="tr-mode active" data-mode="en2zh">英译汉</button>
+      <button class="tr-mode" data-mode="zh2en">汉译英</button>
+    </div>
+    <input id="trInput" class="dict-input" placeholder="输入英文单词，例如 water" autocomplete="off">
+    <div id="trResult" class="tr-result"></div>
+    <div class="modal-actions"><button class="btn ghost" data-close="trOverlay">关闭</button></div>
+  </div>
+</div>
+
+<!-- 庆祝 modal -->
+<div class="overlay" id="winOverlay">
+  <div class="modal" style="text-align:center;">
+    <h2 style="justify-content:center;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5 5.5.8-4 4 1 5.5L12 20l-5 3 1-5.5-4-4 5.5-.8z"/></svg>
+      本单元全部记住啦！
+    </h2>
+    <p style="color:var(--muted);">太棒了，你通关了本单元的所有单词！</p>
+    <div class="modal-actions" style="justify-content:center;">
+      <button class="btn" id="replayBtn">再刷一遍</button>
+      <button class="btn ghost" id="dictUnitBtn">听写本单元</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 单词数据（按单元，来自课本词汇表） ============ */
+const WORDS = [
+ // Unit 1
+ {u:1,w:"hello",ph:"həˈləʊ",zh:"喂；你好",ex:"Hello! I am Tom.",sp:["hel","lo"]},
+ {u:1,w:"hi",ph:"haɪ",zh:"嗨；你好",ex:"Hi, Sarah!",sp:["hi"]},
+ {u:1,w:"I",ph:"aɪ",zh:"我",ex:"I am a boy.",sp:["I"]},
+ {u:1,w:"am",ph:"æm",zh:"是",ex:"I am fine.",sp:["am"]},
+ {u:1,w:"I'm",ph:"aɪm",zh:"我是（= I am）",ex:"I'm Lucy.",sp:["I'm"]},
+ {u:1,w:"Miss",ph:"mɪs",zh:"小姐；女士",ex:"Miss White.",sp:["Miss"]},
+ {u:1,w:"what",ph:"wɒt",zh:"什么",ex:"What is this?",sp:["wh","at"]},
+ {u:1,w:"is",ph:"ɪz",zh:"是",ex:"He is my dad.",sp:["is"]},
+ {u:1,w:"what's",ph:"wɒts",zh:"是什么（= what is）",ex:"What's your name?",sp:["what's"]},
+ {u:1,w:"your",ph:"jɔː(r)",zh:"你的；你们的",ex:"Your book, please.",sp:["yo","ur"]},
+ {u:1,w:"name",ph:"neɪm",zh:"名字",ex:"My name is Lily.",sp:["na","me"]},
+ {u:1,w:"stand up",ph:"stænd ʌp",zh:"起立；站起来",ex:"Stand up, please.",sp:["stand","up"]},
+ {u:1,w:"boy",ph:"bɔɪ",zh:"男孩",ex:"He is a boy.",sp:["boy"]},
+ {u:1,w:"and",ph:"ænd",zh:"和",ex:"Tom and I.",sp:["and"]},
+ {u:1,w:"girl",ph:"ɡɜːl",zh:"女孩",ex:"She is a girl.",sp:["girl"]},
+ {u:1,w:"sit down",ph:"sɪt daʊn",zh:"坐下",ex:"Sit down, boys.",sp:["sit","down"]},
+ {u:1,w:"Mr",ph:"ˈmɪstə(r)",zh:"先生",ex:"Mr Li.",sp:["Mr"]},
+ {u:1,w:"dad",ph:"dæd",zh:"爸爸",ex:"This is my dad.",sp:["dad"]},
+ {u:1,w:"Good morning!",ph:"ɡʊd ˈmɔːnɪŋ",zh:"早上好！",ex:"Good morning, Mum.",sp:["Good","mor","ning"]},
+ {u:1,w:"Good afternoon!",ph:"ɡʊd ˌɑːftəˈnuːn",zh:"下午好！",ex:"Good afternoon, teacher.",sp:["Good","after","noon"]},
+ {u:1,w:"Good evening!",ph:"ɡʊd ˈiːvnɪŋ",zh:"晚上好！",ex:"Good evening, Dad.",sp:["Good","eve","ning"]},
+ {u:1,w:"Goodbye!",ph:"ɡʊdˈbaɪ",zh:"再见！",ex:"Goodbye, my friend.",sp:["Good","bye"]},
+ {u:1,w:"Good night!",ph:"ɡʊd naɪt",zh:"晚安！",ex:"Good night, baby.",sp:["Good","night"]},
+ {u:1,w:"Bye!",ph:"baɪ",zh:"再见！",ex:"Bye, see you!",sp:["Bye"]},
+ // Unit 2
+ {u:2,w:"pencil",ph:"ˈpensl",zh:"铅笔",ex:"I have a pencil.",sp:["pen","cil"]},
+ {u:2,w:"sharpener",ph:"ˈʃɑːpnə(r)",zh:"卷笔刀",ex:"The sharpener is new.",sp:["shar","pen","er"]},
+ {u:2,w:"pencil box",ph:"ˈpensl bɒks",zh:"文具盒",ex:"My pencil box is blue.",sp:["pencil","box"]},
+ {u:2,w:"schoolbag",ph:"ˈskuːlbæɡ",zh:"书包",ex:"This is my schoolbag.",sp:["school","bag"]},
+ {u:2,w:"eraser",ph:"ɪˈreɪzə(r)",zh:"橡皮；黑板擦",ex:"I have an eraser.",sp:["e","ra","ser"]},
+ {u:2,w:"crayon",ph:"ˈkreɪən",zh:"蜡笔",ex:"I like the crayon.",sp:["cray","on"]},
+ {u:2,w:"pen",ph:"pen",zh:"钢笔",ex:"The pen is red.",sp:["pen"]},
+ {u:2,w:"ruler",ph:"ˈruːlə(r)",zh:"直尺",ex:"Show me your ruler.",sp:["ru","ler"]},
+ {u:2,w:"look",ph:"lʊk",zh:"看",ex:"Look at the cat.",sp:["look"]},
+ {u:2,w:"have",ph:"hæv",zh:"有",ex:"I have a dog.",sp:["have"]},
+ {u:2,w:"a",ph:"ə; eɪ",zh:"一个",ex:"I see a bird.",sp:["a"]},
+ {u:2,w:"new",ph:"njuː",zh:"新的；新来的",ex:"My book is new.",sp:["new"]},
+ {u:2,w:"it",ph:"ɪt",zh:"它",ex:"It is a kite.",sp:["it"]},
+ {u:2,w:"it's",ph:"ɪts",zh:"它是（= it is）",ex:"It's a doll.",sp:["it's"]},
+ {u:2,w:"nice",ph:"naɪs",zh:"好看的；令人愉悦的",ex:"The gift is nice.",sp:["nice"]},
+ {u:2,w:"can",ph:"kæn",zh:"能；会",ex:"I can swim.",sp:["can"]},
+ {u:2,w:"use",ph:"juːz",zh:"用；使用",ex:"Use your pen.",sp:["use"]},
+ {u:2,w:"find",ph:"faɪnd",zh:"发现；找到",ex:"I can find it.",sp:["find"]},
+ {u:2,w:"my",ph:"maɪ",zh:"我的",ex:"This is my mum.",sp:["my"]},
+ {u:2,w:"sure",ph:"ʃʊə(r)",zh:"当然",ex:"Sure, here you are.",sp:["sure"]},
+ {u:2,w:"you",ph:"juː",zh:"你；你们",ex:"Thank you.",sp:["you"]},
+ {u:2,w:"sorry",ph:"ˈsɒri",zh:"抱歉",ex:"I am sorry.",sp:["sor","ry"]},
+ {u:2,w:"don't",ph:"dəʊnt",zh:"没，不（= do not）",ex:"I don't know.",sp:["don't"]},
+ {u:2,w:"Here you are.",ph:"hɪə ju ɑː",zh:"给你。",ex:"Here you are, Tom.",sp:["Here","you","are"]},
+ {u:2,w:"Thank you!",ph:"θæŋk ju",zh:"谢谢你！",ex:"Thank you, Mum!",sp:["Thank","you"]},
+ {u:2,w:"You're welcome!",ph:"jɔː(r) ˈwelkəm",zh:"不用谢！",ex:"You're welcome, Lily.",sp:["You","re","wel","come"]},
+ // Unit 3
+ {u:3,w:"ball",ph:"bɔːl",zh:"球",ex:"I have a ball.",sp:["ball"]},
+ {u:3,w:"doll",ph:"dɒl",zh:"玩偶；玩具娃娃",ex:"The doll is cute.",sp:["doll"]},
+ {u:3,w:"kite",ph:"kaɪt",zh:"风筝",ex:"The kite is high.",sp:["kite"]},
+ {u:3,w:"jigsaw",ph:"ˈdʒɪɡsɔː",zh:"拼图；拼板玩具",ex:"I like the jigsaw.",sp:["jig","saw"]},
+ {u:3,w:"toy",ph:"tɔɪ",zh:"玩具",ex:"This toy is fun.",sp:["toy"]},
+ {u:3,w:"cat",ph:"kæt",zh:"猫",ex:"The cat is small.",sp:["cat"]},
+ {u:3,w:"dog",ph:"dɒɡ",zh:"狗",ex:"The dog is big.",sp:["dog"]},
+ {u:3,w:"bike",ph:"baɪk",zh:"自行车",ex:"I have a bike.",sp:["bike"]},
+ {u:3,w:"bus",ph:"bʌs",zh:"公共汽车",ex:"The bus is yellow.",sp:["bus"]},
+ {u:3,w:"this",ph:"ðɪs",zh:"这，这个",ex:"This is a dog.",sp:["this"]},
+ {u:3,w:"mum",ph:"mʌm",zh:"妈妈",ex:"I love my mum.",sp:["mum"]},
+ {u:3,w:"gift",ph:"ɡɪft",zh:"礼物",ex:"A gift for you.",sp:["gift"]},
+ {u:3,w:"for",ph:"fɔː(r)",zh:"对，给",ex:"This is for you.",sp:["for"]},
+ {u:3,w:"so",ph:"səʊ",zh:"很；极",ex:"The dog is so cute.",sp:["so"]},
+ {u:3,w:"cute",ph:"kjuːt",zh:"可爱的",ex:"The cat is cute.",sp:["cute"]},
+ {u:3,w:"play with",ph:"pleɪ wɪð",zh:"玩……；和……一起玩",ex:"I play with my toy.",sp:["play","with"]},
+ {u:3,w:"good",ph:"ɡʊd",zh:"好的；亲密的",ex:"You are a good boy.",sp:["good"]},
+ {u:3,w:"friend",ph:"frend",zh:"朋友",ex:"He is my friend.",sp:["fri","end"]},
+ {u:3,w:"she",ph:"ʃiː",zh:"她",ex:"She is my friend.",sp:["she"]},
+ {u:3,w:"has",ph:"hæz",zh:"有（第三人称单数）",ex:"She has a cat.",sp:["has"]},
+ {u:3,w:"often",ph:"ˈɒfn",zh:"经常",ex:"I often read.",sp:["of","ten"]},
+ {u:3,w:"share",ph:"ʃeə(r)",zh:"分享",ex:"Let's share the toy.",sp:["sh","are"]},
+ {u:3,w:"Happy birthday!",ph:"ˈhæpi ˈbɜːθdeɪ",zh:"生日快乐！",ex:"Happy birthday, Mum!",sp:["Happy","birth","day"]},
+ // Unit 4
+ {u:4,w:"face",ph:"feɪs",zh:"脸；面孔",ex:"Wash your face.",sp:["face"]},
+ {u:4,w:"hair",ph:"heə(r)",zh:"头发",ex:"My hair is long.",sp:["hair"]},
+ {u:4,w:"eye",ph:"aɪ",zh:"眼睛",ex:"I have two eyes.",sp:["eye"]},
+ {u:4,w:"ear",ph:"ɪə(r)",zh:"耳朵",ex:"My ear is small.",sp:["ear"]},
+ {u:4,w:"nose",ph:"nəʊz",zh:"鼻子",ex:"Touch your nose.",sp:["nose"]},
+ {u:4,w:"mouth",ph:"maʊθ",zh:"嘴",ex:"Open your mouth.",sp:["mouth"]},
+ {u:4,w:"long",ph:"lɒŋ",zh:"长的",ex:"The ruler is long.",sp:["long"]},
+ {u:4,w:"short",ph:"ʃɔːt",zh:"短的；矮的",ex:"The pencil is short.",sp:["short"]},
+ {u:4,w:"big",ph:"bɪɡ",zh:"大的",ex:"The dog is big.",sp:["big"]},
+ {u:4,w:"small",ph:"smɔːl",zh:"小的",ex:"The cat is small.",sp:["small"]},
+ {u:4,w:"tall",ph:"tɔːl",zh:"高的",ex:"The boy is tall.",sp:["tall"]},
+ {u:4,w:"let's",ph:"lets",zh:"我们……吧（= let us）",ex:"Let's go to school.",sp:["let's"]},
+ {u:4,w:"OK",ph:"ˌəʊˈkeɪ",zh:"对；好；行",ex:"OK, Mum.",sp:["OK"]},
+ {u:4,w:"his",ph:"hɪz",zh:"他的",ex:"His name is Tom.",sp:["his"]},
+ {u:4,w:"he",ph:"hiː",zh:"他",ex:"He is my dad.",sp:["he"]},
+ {u:4,w:"or",ph:"ɔː(r)",zh:"或者，还是",ex:"Tea or water?",sp:["or"]},
+ {u:4,w:"her",ph:"hɜː(r)",zh:"她的",ex:"Her name is Lily.",sp:["her"]},
+ {u:4,w:"are",ph:"ɑː(r)",zh:"是（复数）",ex:"You are my friend.",sp:["are"]},
+ // Unit 5
+ {u:5,w:"milk",ph:"mɪlk",zh:"奶",ex:"I drink milk.",sp:["milk"]},
+ {u:5,w:"water",ph:"ˈwɔːtə(r)",zh:"水",ex:"I want water.",sp:["wa","ter"]},
+ {u:5,w:"tea",ph:"tiː",zh:"茶；茶叶",ex:"I like tea.",sp:["tea"]},
+ {u:5,w:"juice",ph:"dʒuːs",zh:"果汁",ex:"The juice is sweet.",sp:["juice"]},
+ {u:5,w:"cola",ph:"ˈkəʊlə",zh:"可乐",ex:"Cola is sweet.",sp:["co","la"]},
+ {u:5,w:"apple",ph:"ˈæpl",zh:"苹果",ex:"I like apples.",sp:["ap","ple"]},
+ {u:5,w:"banana",ph:"bəˈnɑːnə",zh:"香蕉",ex:"A banana for you.",sp:["ba","na","na"]},
+ {u:5,w:"orange",ph:"ˈɒrɪndʒ",zh:"橙子（橙色）",ex:"I eat an orange.",sp:["or","ange"]},
+ {u:5,w:"grape",ph:"ɡreɪp",zh:"葡萄",ex:"I like grapes.",sp:["grape"]},
+ {u:5,w:"lemon",ph:"ˈlemən",zh:"柠檬",ex:"The lemon is sour.",sp:["lem","on"]},
+ {u:5,w:"drink",ph:"drɪŋk",zh:"饮料；喝",ex:"I drink juice.",sp:["drink"]},
+ {u:5,w:"fruit",ph:"fruːt",zh:"水果",ex:"I like fruit.",sp:["fruit"]},
+ {u:5,w:"buy",ph:"baɪ",zh:"买",ex:"I buy an apple.",sp:["buy"]},
+ {u:5,w:"some",ph:"sʌm",zh:"一些",ex:"I want some water.",sp:["some"]},
+ {u:5,w:"too",ph:"tuː",zh:"也；还",ex:"I like it, too.",sp:["too"]},
+ {u:5,w:"tomorrow",ph:"təˈmɒrəʊ",zh:"明天",ex:"See you tomorrow.",sp:["to","mor","row"]},
+ {u:5,w:"like",ph:"laɪk",zh:"喜欢",ex:"I like the dog.",sp:["like"]},
+ {u:5,w:"yes",ph:"jes",zh:"是；对；好的",ex:"Yes, I do.",sp:["yes"]},
+ {u:5,w:"no",ph:"nəʊ",zh:"不；不是；没有",ex:"No, thank you.",sp:["no"]},
+ {u:5,w:"want",ph:"wɒnt",zh:"要；想要",ex:"I want a cake.",sp:["want"]},
+ {u:5,w:"make",ph:"meɪk",zh:"做；制作",ex:"Let's make a cake.",sp:["make"]},
+ {u:5,w:"say",ph:"seɪ",zh:"说",ex:"Say 'hello'.",sp:["say"]},
+ {u:5,w:"ice cream",ph:"aɪs kriːm",zh:"冰激凌",ex:"I like ice cream.",sp:["ice","cream"]},
+ {u:5,w:"candy",ph:"ˈkændi",zh:"糖果",ex:"The candy is sweet.",sp:["can","dy"]},
+ {u:5,w:"they",ph:"ðeɪ",zh:"他们；她们；它们",ex:"They are my friends.",sp:["they"]},
+ {u:5,w:"bad",ph:"bæd",zh:"不好的；有害的",ex:"The candy is bad for you.",sp:["bad"]},
+ // Unit 6
+ {u:6,w:"cake",ph:"keɪk",zh:"蛋糕",ex:"I eat a cake.",sp:["cake"]},
+ {u:6,w:"bread",ph:"bred",zh:"面包",ex:"I like bread.",sp:["bread"]},
+ {u:6,w:"rice",ph:"raɪs",zh:"大米；米饭",ex:"I eat rice.",sp:["rice"]},
+ {u:6,w:"noodle",ph:"ˈnuːdl",zh:"面条",ex:"I like noodles.",sp:["noo","dle"]},
+ {u:6,w:"soup",ph:"suːp",zh:"汤；羹",ex:"The soup is hot.",sp:["soup"]},
+ {u:6,w:"egg",ph:"eɡ",zh:"蛋；鸡蛋",ex:"I eat an egg.",sp:["egg"]},
+ {u:6,w:"chicken",ph:"ˈtʃɪkɪn",zh:"鸡肉",ex:"I like chicken.",sp:["chick","en"]},
+ {u:6,w:"fish",ph:"fɪʃ",zh:"鱼肉",ex:"The fish is small.",sp:["fish"]},
+ {u:6,w:"tomato",ph:"təˈmɑːtəʊ",zh:"番茄；西红柿",ex:"I eat a tomato.",sp:["to","ma","to"]},
+ {u:6,w:"potato",ph:"pəˈteɪtəʊ",zh:"马铃薯；土豆",ex:"I like potatoes.",sp:["po","ta","to"]},
+ {u:6,w:"food",ph:"fuːd",zh:"食物",ex:"The food is good.",sp:["food"]},
+ {u:6,w:"have",ph:"hæv",zh:"吃；喝",ex:"I have an egg.",sp:["have"]},
+ {u:6,w:"but",ph:"bʌt",zh:"然而；但是",ex:"I like fish, but not meat.",sp:["but"]},
+ {u:6,w:"hungry",ph:"ˈhʌŋɡri",zh:"饥饿的",ex:"I am hungry.",sp:["hun","gry"]},
+ {u:6,w:"dinner",ph:"ˈdɪnə(r)",zh:"主餐，正餐",ex:"The dinner is nice.",sp:["din","ner"]},
+ {u:6,w:"need",ph:"niːd",zh:"需要",ex:"I need water.",sp:["need"]},
+ {u:6,w:"vegetable",ph:"ˈvedʒtəbl",zh:"蔬菜",ex:"I eat vegetables.",sp:["veg","e","ta","ble"]},
+ {u:6,w:"tomatoes with eggs",ph:"təˈmɑːtəʊz wɪð eɡz",zh:"西红柿炒鸡蛋",ex:"I like tomatoes with eggs.",sp:["tomatoes","with","eggs"]},
+ {u:6,w:"What about ...?",ph:"wɒt əˈbaʊt",zh:"……怎么样？",ex:"What about some milk?",sp:["What","about"]}
+];
+
+/* 颜色词映射（要求10：颜色词用本色显示） */
+const COLOR_MAP = {red:"#d83a3a",green:"#1f9d55",blue:"#2b6fb0",yellow:"#e0b400",orange:"#e8741e",purple:"#7a4fb0",brown:"#8a5a2b",black:"#222",white:"#cfcfcf",pink:"#e36fa0"};
+/* 形状窍门（少数像图画的词） */
+const SHAPE_TIP = {
+  "eye":"eye 像一张脸：两个 e 是两只眼睛，y 是中间的鼻子。",
+  "tall":"tall 里的 ll 像两根长腿，所以 tall 是『高的』，写得也高高的。",
+  "small":"small 小小的，记住它个子矮，写得小小的。",
+  "big":"big 个头大，记住它壮壮的，写得大大的。"
+};
+
+/* ============ 预计算记忆窍门 ============ */
+const wordSet = new Set(WORDS.map(x=>x.w.toLowerCase()));
+const byWord = {};
+WORDS.forEach((x,i)=>{ if(!(x.w in byWord)) byWord[x.w]=i; });
+
+// 藏词：本词里藏着另一个课本单词（>=3字母）
+function hiddenIn(w){
+  const low=w.toLowerCase().replace(/[^a-z]/g,'');
+  const found=[];
+  WORDS.forEach(x=>{
+    const v=x.w.toLowerCase().replace(/[^a-z]/g,'');
+    if(v.length>=3 && v!==low && low.includes(v) && !found.includes(v)) found.push(v);
+  });
+  return found;
+}
+// 别搞混：同长度、只差一个字母
+function confuseWith(w){
+  const low=w.toLowerCase().replace(/[^a-z]/g,'');
+  const out=[];
+  WORDS.forEach(x=>{
+    const v=x.w.toLowerCase().replace(/[^a-z]/g,'');
+    if(v.length===low.length && v!==low){
+      let diff=0; for(let i=0;i<low.length;i++) if(low[i]!==v[i]) diff++;
+      if(diff===1) out.push({word:x.w, idx:diffPos(low,v)});
+    }
+  });
+  return out;
+}
+function diffPos(a,b){ for(let i=0;i<a.length;i++) if(a[i]!==b[i]) return i; return -1; }
+
+// 拼读家族：按字母组合归类
+const COMBOS = ["ee","ea","oo","a_e","i_e","ar","ir","ur","ow","ear","sh","th","ck"];
+function combosOf(w){
+  const low=w.toLowerCase().replace(/[^a-z]/g,'');
+  let hits=[];
+  if(low.includes("ee")) hits.push("ee");
+  if(low.includes("ea")) hits.push("ea");
+  if(low.includes("oo")) hits.push("oo");
+  if(/a.e/.test(low)) hits.push("a_e");
+  if(/i.e/.test(low)) hits.push("i_e");
+  if(low.includes("ar")) hits.push("ar");
+  if(low.includes("ir")) hits.push("ir");
+  if(low.includes("ur")) hits.push("ur");
+  if(low.includes("ow")) hits.push("ow");
+  if(low.includes("ear")) hits.push("ear");
+  if(low.includes("sh")) hits.push("sh");
+  if(low.includes("th")) hits.push("th");
+  if(low.includes("ck")) hits.push("ck");
+  if(hits.includes("ear")) hits = hits.filter(c=>c!=="ar"); // ear 已含 ar，避免并入 ar 家族
+  return hits;
+}
+// 拼读家族：先找字母组合，再对照音标按“相同读音”归一家
+function soundOf(ph, combo){
+  switch(combo){
+    case "ee": return "iː";
+    case "ea": if(ph.includes("ɪə")) return "ɪə"; if(ph.includes("iː")) return "iː"; if(ph.includes("e")) return "e"; return "ea";
+    case "oo": return ph.includes("ʊ") ? "ʊ" : "uː";
+    case "a_e": return ph.includes("eɪ") ? "eɪ" : "a_e_x";
+    case "i_e": return ph.includes("aɪ") ? "aɪ" : "i_e_x";
+    case "ar": return ph.includes("ɑː") ? "ɑː" : "ar_x";
+    case "ir": case "ur": return "ɜː";
+    case "ow": return (ph.includes("əʊ")||ph.includes("oʊ")) ? "oʊ" : "aʊ";
+    case "ear": return "ɪə";
+    case "sh": return "ʃ";
+    case "th": return ph.includes("ð") ? "ð" : "θ";
+    case "ck": return "k";
+  }
+  return combo;
+}
+function famPairs(w){
+  if(!(w in byWord)) return [];
+  const cs=combosOf(w); if(!cs.length) return [];
+  const ph=WORDS[byWord[w]].ph;
+  return cs.map(c=>c+"#"+soundOf(ph,c));
+}
+function familyOf(w){
+  const mine=famPairs(w);
+  if(!mine.length) return [];
+  const fam=new Set();
+  WORDS.forEach(x=>{
+    if(x.w===w) return;
+    const p=famPairs(x.w);
+    if(p.some(pp=>mine.includes(pp))) fam.add(x.w);
+  });
+  return [...fam];
+}
+
+/* ============ 本地存储 ============ */
+const LS_KEY="pep_g3_flash_v1";
+let store = loadStore();
+function loadStore(){
+  try{ const s=JSON.parse(localStorage.getItem(LS_KEY)); if(s) return s; }catch(e){}
+  return {wordbook:[], wbProgress:{}, remembered:{}};
+}
+function saveStore(){ localStorage.setItem(LS_KEY, JSON.stringify(store)); }
+function inBook(w){ return store.wordbook.includes(w); }
+function addBook(w){ if(!inBook(w)){ store.wordbook.push(w); if(!(w in store.wbProgress)) store.wbProgress[w]=0; saveStore(); toast("已加入生词本"); } }
+function removeBook(w){ store.wordbook=store.wordbook.filter(x=>x!==w); delete store.wbProgress[w]; saveStore(); }
+function rememberedOf(unit){ return new Set(store.remembered[unit]||[]); }
+function markRemembered(unit,w){ const s=rememberedOf(unit); s.add(w); store.remembered[unit]=[...s]; saveStore(); }
+
+/* ============ 状态 ============ */
+let curUnit=1;            // 0 = 全部
+let curIdx=-1;            // 当前卡片在 WORDS 中的下标
+let flipped=false;
+let occMap={};            // 本轮出现次数
+let studyQueue=[];        // 本轮待学（下标）
+let pendingRetry=[];      // 待复习（下标）
+let normalSinceRetry=0;
+let selectingIds=[];      // 当前筛选下的单词下标列表
+
+/* ============ 渲染 ============ */
+const $=id=>document.getElementById(id);
+function unitWords(u){ return WORDS.map((x,i)=>({x,i})).filter(o=> u===0 || o.x.u===u).map(o=>o.i); }
+
+function buildTabs(){
+  const t=$("tabs"); t.innerHTML="";
+  const items=[{u:0,l:"全部"}];
+  for(let u=1;u<=6;u++) items.push({u, l:"Unit "+u});
+  items.forEach(it=>{
+    const b=document.createElement("div");
+    b.className="tab"+(it.u===curUnit?" active":"");
+    b.textContent=it.l;
+    b.onclick=()=>{ curUnit=it.u; buildTabs(); startStudy(); };
+    t.appendChild(b);
+  });
+  $("connectBtn").style.display = (curUnit>=1 && curUnit<=6) ? "" : "none";
+}
+
+function startStudy(){
+  selectingIds = unitWords(curUnit);
+  const rem = rememberedOf(curUnit===0?0:curUnit);
+  // 若选全部，进度按全部记
+  studyQueue = shuffle(selectingIds.filter(i=> !rem.has(WORDS[i].w)));
+  pendingRetry=[]; normalSinceRetry=0; occMap={};
+  flipped=false; $("card").classList.remove("flipped");
+  updateBackControls();
+  if(studyQueue.length===0){ showWin(false); return; }
+  nextCard(true);
+  updateProgress();
+}
+
+function nextCard(force){
+  if(pendingRetry.length && (normalSinceRetry>=3 || studyQueue.length===0)){
+    curIdx = pendingRetry.shift();
+    normalSinceRetry=0;
+    occMap[curIdx]=(occMap[curIdx]||0)+1;
+  } else if(studyQueue.length){
+    curIdx = studyQueue.shift();
+    normalSinceRetry++;
+    if(!(curIdx in occMap)) occMap[curIdx]=1;
+  } else if(pendingRetry.length){
+    curIdx = pendingRetry.shift(); occMap[curIdx]=(occMap[curIdx]||0)+1;
+  } else {
+    showWin(true); return;
+  }
+  renderCard();
+}
+
+function renderCard(){
+  const d=WORDS[curIdx];
+  flipped=false; $("card").classList.remove("flipped");
+  // 正面：彩色分段
+  const we=$("wordEl"); we.innerHTML="";
+  const isPhrase = d.w.includes(" ");
+  const palette=["var(--seg1)","var(--seg2)","var(--seg3)","var(--seg4)","var(--seg5)"];
+  let ci=0;
+  d.sp.forEach(seg=>{
+    const s=document.createElement("span");
+    s.className="seg";
+    s.textContent=seg;
+    if(COLOR_MAP[d.w.toLowerCase()]) s.style.color=COLOR_MAP[d.w.toLowerCase()];
+    else { s.style.color=palette[ci%palette.length]; ci++; }
+    we.appendChild(s);
+    if(isPhrase){ we.appendChild(document.createTextNode(" ")); }
+  });
+  we.className="word "+sizeClass(d.w);
+  $("phonEl").textContent="/"+d.ph+"/";
+  $("occEl").textContent = occMap[curIdx]>1 ? ("第 "+occMap[curIdx]+" 次出现") : "";
+  // 背面
+  $("zhEl").textContent=d.zh;
+  $("exEl").innerHTML="例句：<b>"+d.ex+"</b>";
+  renderTips(d);
+  updateHeart();
+  updateBackControls();
+  updateProgress();
+}
+
+function sizeClass(w){
+  if(w==="big") return "size-big";
+  if(w==="small") return "size-small";
+  if(w==="tall") return "size-tall";
+  if(w==="fast") return "size-fast";
+  return "";
+}
+
+function renderTips(d){
+  const box=$("tipsEl"); box.innerHTML="";
+  const title=document.createElement("div"); title.className="tip-title"; title.textContent="记忆窍门"; box.appendChild(title);
+
+  // 藏词
+  const hid=hiddenIn(d.w);
+  if(hid.length){
+    const b=document.createElement("div"); b.className="tip-block";
+    b.innerHTML='<span class="lab">藏词：</span>'+d.w+' 里藏着 ';
+    hid.forEach((h,k)=>{
+      const sp=document.createElement("span"); sp.className="hl"; sp.textContent=h;
+      sp.style.cursor="pointer"; sp.onclick=()=>jumpToWord(h);
+      b.appendChild(sp);
+      if(k<hid.length-1) b.appendChild(document.createTextNode("、"));
+    });
+    b.appendChild(document.createTextNode("，点一点去记它。"));
+    box.appendChild(b);
+  }
+  // 拼读家族
+  const fam=familyOf(d.w);
+  if(fam.length){
+    const b=document.createElement("div"); b.className="tip-block";
+    b.innerHTML='<span class="lab">拼读家族：</span>和这些词是一家（同字母组合）：';
+    fam.slice(0,12).forEach(f=>{
+      const c=document.createElement("span"); c.className="chip"; c.textContent=f; c.onclick=()=>jumpToWord(f);
+      b.appendChild(c);
+    });
+    box.appendChild(b);
+  }
+  // 别搞混
+  const cf=confuseWith(d.w);
+  if(cf.length){
+    const b=document.createElement("div"); b.className="tip-block";
+    b.innerHTML='<span class="lab">别搞混：</span>和 ';
+    cf.forEach((o,k)=>{
+      const c=document.createElement("span"); c.className="chip";
+      // 标记不同字母为红色
+      const low=o.word.toLowerCase(); let html="";
+      for(let i=0;i<low.length;i++){ html += (i===o.idx)?('<span class="diff">'+low[i]+'</span>'):low[i]; }
+      c.innerHTML=html; c.onclick=()=>jumpToWord(o.word);
+      b.appendChild(c);
+      if(k<cf.length-1) b.appendChild(document.createTextNode(" "));
+    });
+    b.appendChild(document.createTextNode(" 只差一个字母，红了的那字母要分清。"));
+    box.appendChild(b);
+  }
+  // 形状窍门
+  if(SHAPE_TIP[d.w]){
+    const b=document.createElement("div"); b.className="shape-tip"; b.textContent=SHAPE_TIP[d.w];
+    box.appendChild(b);
+  }
+}
+
+function jumpToWord(w){
+  const idx = byWord[w];
+  if(idx===undefined) return;
+  curIdx=idx;
+  // 关闭弹窗
+  ["wbOverlay","connectOverlay","dictOverlay","winOverlay"].forEach(o=>$(o).classList.remove("show"));
+  renderCard();
+  toast("跳到："+w);
+}
+
+function updateHeart(){
+  const d=WORDS[curIdx];
+  const on=inBook(d.w);
+  ["heartSvg","heartSvg2"].forEach(id=>{
+    const s=$(id); s.setAttribute("fill", on?"#e0413f":"none"); s.style.color = on?"#e0413f":"var(--green)";
+  });
+}
+
+function updateBackControls(){
+  $("backControls").style.display = flipped ? "flex" : "none";
+}
+
+function updateProgress(){
+  const total = selectingIds.length;
+  const rem = rememberedOf(curUnit===0?0:curUnit);
+  const got = selectingIds.filter(i=>rem.has(WORDS[i].w)).length;
+  const pct = total? Math.round(got/total*100):0;
+  $("progFill").style.width=pct+"%";
+  $("progLabel").textContent="已记住 "+got+" / "+total;
+}
+
+/* ============ 交互 ============ */
+function flip(){ flipped=!flipped; $("card").classList.toggle("flipped",flipped); updateBackControls(); }
+
+$("card").onclick=(e)=>{ if(e.target.closest(".icon-btn")) return; flip(); };
+$("flipBtn").onclick=flip;
+$("nextBtn").onclick=()=>{ nextCard(); };
+$("speakBtn").onclick=(e)=>{ e.stopPropagation(); speak(WORDS[curIdx].w); };
+$("speakBtn2").onclick=(e)=>{ e.stopPropagation(); speak(WORDS[curIdx].w); };
+$("heartBtn").onclick=(e)=>{ e.stopPropagation(); toggleHeart(); };
+$("heartBtn2").onclick=(e)=>{ e.stopPropagation(); toggleHeart(); };
+function toggleHeart(){ const d=WORDS[curIdx]; if(inBook(d.w)){ removeBook(d.w); toast("已从生词本移除"); } else { addBook(d.w); } updateHeart(); }
+
+$("forgetBtn").onclick=()=>{
+  const d=WORDS[curIdx];
+  addBook(d.w); updateHeart();
+  occMap[curIdx]=(occMap[curIdx]||1);
+  pendingRetry.push(curIdx);
+  toast("没记住，已加入生词本，3张后复习");
+  nextCard();
+};
+$("rememberBtn").onclick=()=>{
+  const d=WORDS[curIdx];
+  markRemembered(curUnit===0?0:curUnit, d.w);
+  updateProgress();
+  nextCard();
+};
+
+/* ============ 生词本弹窗 ============ */
+$("wbBtn").onclick=openWordbook;
+function openWordbook(){
+  const list=$("wbList"); list.innerHTML="";
+  if(store.wordbook.length===0){ list.innerHTML='<p style="color:var(--muted)">生词本还是空的，点卡片上的心形就能收藏啦。</p>'; }
+  store.wordbook.forEach(w=>{
+    const idx=byWord[w]; const d=WORDS[idx];
+    const item=document.createElement("div"); item.className="wb-item";
+    const left=document.createElement("div");
+    left.innerHTML='<span class="w">'+w+'</span> <span class="p">/'+d.ph+'/</span> <span class="z">'+d.zh+'</span>';
+    const dots=document.createElement("span"); dots.className="dots";
+    const prog=store.wbProgress[w]||0;
+    for(let i=0;i<3;i++){ const dt=document.createElement("span"); dt.className="dot"+(i<prog?" on":""); dots.appendChild(dt); }
+    left.appendChild(dots);
+    const rm=document.createElement("button"); rm.className="rm-btn"; rm.textContent="移除";
+    rm.onclick=()=>{ removeBook(w); openWordbook(); };
+    item.appendChild(left); item.appendChild(rm);
+    list.appendChild(item);
+  });
+  $("wbOverlay").classList.add("show");
+}
+$("dictWbBtn").onclick=()=>{ $("wbOverlay").classList.remove("show"); startDictation("wb"); };
+
+/* ============ 串起来看 ============ */
+const GROUPS={
+ 1:[{t:"打招呼",ws:["hello","hi","Good morning!","Good afternoon!","Good evening!","Goodbye!","Good night!","Bye!"]},
+    {t:"我是谁",ws:["I","am","I'm","what","is","what's","your","name","Miss","Mr"]},
+    {t:"课堂动作",ws:["stand up","sit down","boy","girl","and"]},
+    {t:"我的家人",ws:["dad"]}],
+ 2:[{t:"文具",ws:["pencil","sharpener","pencil box","schoolbag","eraser","crayon","pen","ruler"]},
+    {t:"动作与状态",ws:["look","have","a","new","it","it's","can","use","find","my"]},
+    {t:"礼貌用语",ws:["nice","sure","you","sorry","don't","Here you are.","Thank you!","You're welcome!"]}],
+ 3:[{t:"玩具",ws:["ball","doll","kite","jigsaw","toy","bike","bus"]},
+    {t:"宠物",ws:["cat","dog"]},
+    {t:"礼物与描述",ws:["this","mum","gift","for","so","cute"]},
+    {t:"交朋友",ws:["play with","good","friend","she","has","often","share","Happy birthday!"]}],
+ 4:[{t:"我的身体",ws:["face","hair","eye","ear","nose","mouth"],body:true},
+    {t:"高矮胖瘦",ws:["long","short","big","small","tall"]},
+    {t:"人称",ws:["he","she","his","her","are"]},
+    {t:"其他",ws:["let's","OK","or"]}],
+ 5:[{t:"饮料",ws:["milk","water","tea","juice","cola","drink"]},
+    {t:"水果",ws:["apple","banana","orange","grape","lemon","fruit"]},
+    {t:"喜好与表达",ws:["some","too","tomorrow","like","yes","no","want","make","say","ice cream","candy","they","bad","buy"]}],
+ 6:[{t:"主食与汤",ws:["cake","bread","rice","noodle","soup","food"]},
+    {t:"蛋奶肉",ws:["egg","chicken","fish"]},
+    {t:"蔬菜",ws:["tomato","potato","vegetable","tomatoes with eggs"]},
+    {t:"用餐",ws:["have","but","hungry","dinner","need","What about ...?"]}]
+};
+$("connectBtn").onclick=()=>{
+  const body=$("connectBody"); body.innerHTML="";
+  const groups=GROUPS[curUnit]||[];
+  groups.forEach(g=>{
+    const dv=document.createElement("div"); dv.className="grp";
+    const h=document.createElement("h3"); h.textContent=g.t; dv.appendChild(h);
+    if(g.body){ dv.appendChild(bodySvg()); }
+    const ns=document.createElement("div"); ns.className="nodes";
+    g.ws.forEach(w=>{ const n=document.createElement("div"); n.className="node"; n.textContent=w; n.onclick=()=>jumpToWord(w); ns.appendChild(n); });
+    dv.appendChild(ns); body.appendChild(dv);
+  });
+  $("connectOverlay").classList.add("show");
+};
+function bodySvg(){
+  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
+  svg.setAttribute("viewBox","0 0 200 170"); svg.setAttribute("class","body-svg");
+  svg.innerHTML=`
+    <circle cx="100" cy="80" r="55" fill="#e7f1ec" stroke="#14513a" stroke-width="2"/>
+    <line x1="100" y1="25" x2="100" y2="135" stroke="#bfe0d2"/>
+    <circle cx="78" cy="70" r="9" fill="#fff" stroke="#14513a" stroke-width="2"/><text x="78" y="74" font-size="9" text-anchor="middle" fill="#14513a">eye</text>
+    <circle cx="122" cy="70" r="9" fill="#fff" stroke="#14513a" stroke-width="2"/><text x="122" y="74" font-size="9" text-anchor="middle" fill="#14513a">eye</text>
+    <path d="M70 92 q12 10 22 0" fill="none" stroke="#14513a" stroke-width="2"/><text x="82" y="108" font-size="9" text-anchor="middle" fill="#14513a">nose</text>
+    <path d="M85 55 q15 -10 30 0" fill="none" stroke="#14513a" stroke-width="2"/><text x="100" y="48" font-size="9" text-anchor="middle" fill="#14513a">hair</text>
+    <circle cx="60" cy="80" r="7" fill="#fff" stroke="#14513a" stroke-width="2"/><text x="60" y="83" font-size="8" text-anchor="middle" fill="#14513a">ear</text>
+    <circle cx="140" cy="80" r="7" fill="#fff" stroke="#14513a" stroke-width="2"/><text x="140" y="83" font-size="8" text-anchor="middle" fill="#14513a">ear</text>
+    <path d="M82 110 q18 14 36 0" fill="none" stroke="#14513a" stroke-width="2"/><text x="100" y="128" font-size="9" text-anchor="middle" fill="#14513a">mouth</text>
+    <text x="100" y="160" font-size="11" text-anchor="middle" fill="#14513a" font-weight="bold">face（脸）</text>`;
+  return svg;
+}
+
+/* ============ 听写 ============ */
+let dictState=null;
+$("dictBtn").onclick=()=>startDictation("unit");
+function startDictation(mode){
+  let pool;
+  if(mode==="wb"){ pool=store.wordbook.map(w=>byWord[w]).filter(i=>i!==undefined); if(pool.length===0){ toast("生词本是空的"); return; } }
+  else { pool=unitWords(curUnit); }
+  pool=shuffle(pool.slice());
+  const count = Math.min(10, pool.length);
+  dictState={mode, list:pool.slice(0,count), pos:0, score:0};
+  $("dictOverlay").classList.add("show");
+  renderDict();
+}
+function renderDict(){
+  const b=$("dictBody"); b.innerHTML="";
+  const st=dictState;
+  if(st.pos>=st.list.length){
+    b.innerHTML='<p style="font-size:16px;font-weight:700;color:var(--green)">听写完成！答对 '+st.score+' / '+st.list.length+'</p>'
+      +'<p style="color:var(--muted)">'+(st.mode==="wb"?"连续拼对 3 次的词已自动离开生词本。":"拼错的词已加入生词本，可以去复习哦。")+'</p>';
+    return;
+  }
+  const d=WORDS[st.list[st.pos]];
+  b.innerHTML='<div class="dict-q">第 '+(st.pos+1)+' / '+st.list.length+' 题 &nbsp; <span class="dict-score">答对 '+st.score+'</span></div>'
+    +'<div class="dict-zh">'+d.zh+'</div>';
+  const input=document.createElement("input"); input.className="dict-input"; input.placeholder="写出英文（可含空格）"; input.autocomplete="off";
+  b.appendChild(input);
+  const fb=document.createElement("div"); fb.className="dict-fb"; b.appendChild(fb);
+  const row=document.createElement("div"); row.className="modal-actions";
+  const sub=document.createElement("button"); sub.className="btn"; sub.textContent="提交";
+  const hear=document.createElement("button"); hear.className="btn ghost"; hear.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8"/></svg> 再听一次';
+  row.appendChild(sub); row.appendChild(hear); b.appendChild(row);
+  input.focus();
+  const check=()=>{
+    const ans=input.value.trim().toLowerCase().replace(/\s+/g,' ');
+    const corr=d.w.toLowerCase();
+    if(ans===corr){
+      input.classList.remove("error"); input.classList.add("ok");
+      fb.className="dict-fb ok"; fb.textContent="答对啦！"; st.score++;
+      dingSound();
+      if(st.mode==="wb"){ const p=(store.wbProgress[d.w]||0)+1; store.wbProgress[d.w]=p; if(p>=3){ removeBook(d.w); } saveStore(); }
+      sub.disabled=true; input.disabled=true;
+      setTimeout(()=>{ st.pos++; renderDict(); }, 850);
+    } else {
+      input.classList.remove("ok"); input.classList.add("error","shake");
+      fb.className="dict-fb no"; fb.textContent="正确答案：" + d.w;
+      oopsSound();
+      if(st.mode==="wb"){ store.wbProgress[d.w]=0; saveStore(); } else { addBook(d.w); }
+      sub.disabled=true; input.disabled=true;
+      setTimeout(()=>{ st.pos++; renderDict(); }, 1400);
+    }
+  };
+  sub.onclick=check;
+  input.onkeydown=e=>{ if(e.key==="Enter") check(); };
+  hear.onclick=()=>speak(d.w);
+  speak(d.w);
+}
+
+/* ============ 庆祝 ============ */
+function showWin(celebrate){
+  updateProgress();
+  if(celebrate){ $("winOverlay").classList.add("show"); }
+}
+$("replayBtn").onclick=()=>{ $("winOverlay").classList.remove("show"); startStudy(); };
+$("dictUnitBtn").onclick=()=>{ $("winOverlay").classList.remove("show"); startDictation("unit"); };
+
+/* ============ 工具 ============ */
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function speak(text){
+  try{
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang="en-US"; u.rate=0.75; u.pitch=1;
+    const voices=speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]US/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  }catch(e){}
+}
+let toastTimer=null;
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),1600); }
+
+/* 提示音（Web Audio，无需联网） */
+let audioCtx=null;
+function getAudio(){
+  if(!audioCtx){ try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return null; } }
+  if(audioCtx.state==="suspended") audioCtx.resume();
+  return audioCtx;
+}
+// 拼错时的“啊—噢”声：先降后升的两个音
+function oopsSound(){
+  const ctx=getAudio(); if(!ctx) return;
+  const t0=ctx.currentTime;
+  const notes=[[440,330,0,0.2],[330,392,0.22,0.42]]; // [起频,落频,起始,结束]
+  notes.forEach(([f1,f2,s,e])=>{
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type="triangle";
+    o.frequency.setValueAtTime(f1,t0+s);
+    o.frequency.exponentialRampToValueAtTime(f2,t0+e);
+    g.gain.setValueAtTime(0.0001,t0+s);
+    g.gain.exponentialRampToValueAtTime(0.28,t0+s+0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001,t0+e);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(t0+s); o.stop(t0+e+0.02);
+  });
+}
+// 答对时的轻快“叮”声
+function dingSound(){
+  const ctx=getAudio(); if(!ctx) return;
+  const t0=ctx.currentTime;
+  [[880,0,0.12],[1320,0.1,0.22]].forEach(([f,s,e])=>{
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type="sine"; o.frequency.setValueAtTime(f,t0+s);
+    g.gain.setValueAtTime(0.0001,t0+s);
+    g.gain.exponentialRampToValueAtTime(0.2,t0+s+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t0+e);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(t0+s); o.stop(t0+e+0.02);
+  });
+}
+
+// 关闭弹窗
+document.querySelectorAll("[data-close]").forEach(b=> b.onclick=()=>$(b.getAttribute("data-close")).classList.remove("show"));
+document.querySelectorAll(".overlay").forEach(o=> o.addEventListener("click",e=>{ if(e.target===o) o.classList.remove("show"); }));
+// 预载语音
+if('speechSynthesis' in window){ speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices(); }
+
+/* ============ 翻译工具（英译汉 / 汉译英） ============ */
+let trMode="en2zh";
+$("trBtn").onclick=openTranslate;
+function openTranslate(){
+  // 打开时默认带入当前卡片单词（英译汉方向）
+  if(trMode==="en2zh" && curIdx>=0){ $("trInput").value=WORDS[curIdx].w; }
+  else { $("trInput").value=""; }
+  $("trResult").innerHTML="";
+  $("trOverlay").classList.add("show");
+  $("trInput").focus();
+  if($("trInput").value) trLookup();
+}
+function setTrMode(mode){
+  trMode=mode;
+  document.querySelectorAll("#trToggle .tr-mode").forEach(b=> b.classList.toggle("active", b.getAttribute("data-mode")===mode));
+  $("trInput").placeholder = (mode==="en2zh") ? "输入英文单词，例如 water" : "输入中文意思，例如 水";
+  $("trInput").value=""; $("trResult").innerHTML="";
+  $("trInput").focus();
+}
+document.querySelectorAll("#trToggle .tr-mode").forEach(b=> b.onclick=()=>setTrMode(b.getAttribute("data-mode")));
+$("trInput").oninput=trLookup;
+$("trInput").onkeydown=e=>{ if(e.key==="Enter") trLookup(); };
+
+function trLookup(){
+  const q=$("trInput").value.trim().toLowerCase().replace(/\s+/g,' ');
+  const box=$("trResult"); box.innerHTML="";
+  if(!q) return;
+  if(trMode==="en2zh"){
+    const hit=WORDS.find(x=>x.w.toLowerCase()===q);
+    if(hit){ box.appendChild(trCard(hit)); }
+    else { box.innerHTML='<p class="tr-note">词库里还没收录「'+q+'」哦（翻译基于课本词汇表，共 136 词）。试试课本里的单词吧。</p>'; }
+  } else {
+    const hits=WORDS.filter(x=> x.zh.includes(q) || x.w.toLowerCase()===q);
+    if(hits.length){
+      hits.slice(0,15).forEach(h=> box.appendChild(trCard(h)) );
+      if(hits.length>15) box.innerHTML+='<p class="tr-note">匹配到 '+hits.length+' 个词，仅显示前 15 个。</p>';
+    } else { box.innerHTML='<p class="tr-note">没找到和「'+q+'」对应的词。翻译基于课本词汇表，可换个说法或输入更短的关键字试试。</p>'; }
+  }
+}
+function trCard(d){
+  const card=document.createElement("div"); card.className="tr-card";
+  const w=document.createElement("div"); w.className="tr-w"; w.textContent=d.w;
+  const p=document.createElement("span"); p.className="tr-p"; p.textContent=" /"+d.ph+"/";
+  w.appendChild(p);
+  const zh=document.createElement("div"); zh.className="tr-zh"; zh.textContent=d.zh;
+  const ex=document.createElement("div"); ex.className="tr-ex"; ex.textContent="例句："+d.ex;
+  const sp=document.createElement("button"); sp.className="mini-btn tr-speak";
+  sp.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8"/></svg> 听读';
+  sp.onclick=()=>speak(d.w);
+  card.appendChild(w); card.appendChild(zh); card.appendChild(ex); card.appendChild(sp);
+  return card;
+}
+
+/* ============ 启动 ============ */
+buildTabs();
+startStudy();
+</script>
+</body>
+</html>
